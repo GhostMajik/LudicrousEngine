@@ -1,6 +1,5 @@
 #include "InputInterfaceClass.h"
 
-
 InputInterfaceClass::InputInterfaceClass()
 {
 }
@@ -16,31 +15,35 @@ void InputInterfaceClass::Initialize() {
 	}
 }
 
-void InputInterfaceClass::GetKeyDown(UINT keyCode, LPARAM lParam) {
-	
-	LPSTR keyStr = new char[10];
-	GetKeyNameTextA(lParam, keyStr, 10);
+void InputInterfaceClass::GetKeyDown(UINT keyCode) {
 	keyStates[keyCode] = true;
-	GetKeyState(keyCode);
-	std::string keyOutput = "Key Down = ";
-	keyOutput.append(keyStr);
 }
 
-void InputInterfaceClass::GetKeyUp(UINT keyCode, LPARAM lParam) {
-	LPSTR keyStr = new char[10];
-	GetKeyNameTextA(lParam, keyStr, 10);
+void InputInterfaceClass::GetKeyUp(UINT keyCode) {
 	keyStates[keyCode] = false;
-	GetKeyState(keyCode);
-	std::string keyOutput = "Key Up = ";
-	keyOutput.append(keyStr);
 }
 
 bool InputInterfaceClass::IsKeyPressed(UINT keyCode) {
 	return keyStates[keyCode];
 }
 
-//void MouseDown(UINT mouseButtonNum, LPARAM lParam) {}
-//void MouseUp(UINT mouseButtonNum, LPARAM lParam) {}
+bool InputInterfaceClass::IsButtonPressed(UINT keyCode)
+{
+	return false;
+}
+
+LPSTR InputInterfaceClass::LeftMouseDown(UINT mouseButtonNum) {
+	if (GetKeyState((VK_LBUTTON) & 0x100) == true) {
+		return "LeftMouse";
+	}
+
+}
+LPSTR InputInterfaceClass::LeftMouseUp(UINT mouseButtonNum) {
+	if (GetKeyState((VK_RBUTTON) & 0x100) == true) {
+		return "RightMouse";
+	}
+}
 
 void InputInterfaceClass::ShutDown() {
+
 }

@@ -6,6 +6,7 @@
 #include <stdlib.h>  
 #include <string.h>  
 #include <tchar.h>  
+#include <strsafe.h>
 #include "InputInterfaceClass.h"
 
 // Global variables  
@@ -120,17 +121,28 @@ LRESULT CALLBACK InputHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	{
 		case WM_KEYDOWN:
 		{
-			Input->GetKeyDown((UINT)wParam, lParam);
+			Input->GetKeyDown((UINT)wParam);
 			return 0;
 		}
 		case WM_KEYUP:
 		{
-			Input->GetKeyUp((UINT)wParam, lParam);
+			Input->GetKeyUp((UINT)wParam);
+			return 0;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			Input->LeftMouseDown((UINT)wParam);
+			return 0;
+		}
+		case WM_LBUTTONUP:
+		{
+			Input->LeftMouseUp((UINT)wParam);
 			return 0;
 		}
 		default:
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
+
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -138,19 +150,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	HDC hdc;
 	TCHAR greeting[] = _T("12345");
-	LPSTR keyMessage = "KeyDown ";
+	LPSTR keyMessage = "KeyDown: ";
+	TCHAR outputMessage[16] = {};
+	LPSTR mouseMessage = "mouseDown: ";
+	TCHAR mouseInputMessage[20] = {};
+
+	ZeroMemory(outputMessage, sizeof(outputMessage[0] * 16));
+	ZeroMemory(mouseInputMessage, sizeof(mouseInputMessage[0] * 18));
 
 	switch (message)
 	{
+	case WM_INPUT: {
+		InputHandler(hWnd, message, wParam, lParam);
+	
+	}
+
 	case WM_CHAR: {
-		return InputHandler(hWnd, message, wParam, lParam);
+		InputHandler(hWnd, message, wParam, lParam);
+		for (int i = 0; i < 256; i++) {
+			if (Input->IsKeyPressed(i))
+			{
+				LPSTR keyNamedValue = new char(i);
+				keyMessage = " Key Pressed";
+				StringCchCopy(outputMessage, 2, keyNamedValue);
+				StringCchCat(outputMessage, 16, keyMessage);
+			}	
+		}
+		
 	}
 	//paint message here, need to output button/key pressed in WM_PAINT
 	case WM_PAINT:
+		InvalidateRect(hWnd, NULL, false);
 		hdc = BeginPaint(hWnd, &ps);
 
 		SetWindowText(hWnd,"LudicrousEngine");
-		TextOut(hdc, 400, 300, keyMessage, _tcslen(keyMessage));		
+		OutputDebugString("COLLIN");
+		TextOut(hdc, 400, 300, outputMessage, (sizeof(outputMessage) / sizeof(*outputMessage)));
+		TextOut(hdc, 200, 200, mouseInputMessage, (sizeof(mouseInputMessage) / sizeof(*mouseInputMessage)));
+		
+
+		
 
 		EndPaint(hWnd, &ps);
 		break;
