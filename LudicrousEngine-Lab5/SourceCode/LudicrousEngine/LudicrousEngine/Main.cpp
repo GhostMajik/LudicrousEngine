@@ -94,7 +94,8 @@ int CALLBACK WinMain(
 
 		return 1;
 	}
-
+	HBRUSH brush = CreateSolidBrush(RGB(0, 0, 255));
+	SetClassLongPtr(hWnd, GCLP_HBRBACKGROUND, (LONG)brush);
 	// The parameters to ShowWindow explained:  
 	// hWnd: the value returned from CreateWindow  
 	// nCmdShow: the fourth parameter from WinMain  
@@ -174,6 +175,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				keyMessage = " Key Pressed";
 				StringCchCopy(outputMessage, 2, keyNamedValue);
 				StringCchCat(outputMessage, 16, keyMessage);
+				OutputDebugString("COLIN\n");
+				OutputDebugString(outputMessage);
 			}	
 		}
 		
@@ -184,9 +187,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 
 		SetWindowText(hWnd,"LudicrousEngine");
-		OutputDebugString("COLLIN");
 		TextOut(hdc, 400, 300, outputMessage, (sizeof(outputMessage) / sizeof(*outputMessage)));
-		TextOut(hdc, 200, 200, mouseInputMessage, (sizeof(mouseInputMessage) / sizeof(*mouseInputMessage)));
+		//TextOut(hdc, 200, 200, mouseInputMessage, (sizeof(mouseInputMessage) / sizeof(*mouseInputMessage)));
 		
 
 		

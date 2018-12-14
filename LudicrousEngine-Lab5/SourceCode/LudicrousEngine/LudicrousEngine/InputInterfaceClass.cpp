@@ -33,13 +33,13 @@ bool InputInterfaceClass::IsButtonPressed(UINT keyCode)
 }
 
 LPSTR InputInterfaceClass::LeftMouseDown(UINT mouseButtonNum) {
-	if (GetKeyState((VK_LBUTTON) & 0x100) == true) {
+	if (MOUSEEVENTF_LEFTDOWN == true) {
 		return "LeftMouse";
 	}
 
 }
 LPSTR InputInterfaceClass::LeftMouseUp(UINT mouseButtonNum) {
-	if (GetKeyState((VK_RBUTTON) & 0x100) == true) {
+	if (MOUSEEVENTF_RIGHTDOWN == true) {
 		return "RightMouse";
 	}
 }
