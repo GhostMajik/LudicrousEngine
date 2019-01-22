@@ -135,7 +135,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LudicrousEngine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyActor.cpp" />
+    <ClCompile Include="Update.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LudicrousEngine.h" />
+    <ClInclude Include="MyActor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
