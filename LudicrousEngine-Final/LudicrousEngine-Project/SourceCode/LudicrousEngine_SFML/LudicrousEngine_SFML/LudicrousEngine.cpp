@@ -10,9 +10,21 @@ LudicrousEngine::LudicrousEngine()
 		"Ludicrous Engine by Not Fast, Just Furious!",
 		Style::Fullscreen);
 
+	
 	m_BackgroundTexture.loadFromFile("background.jpg");
 
 	m_BackgroundSprite.setTexture(m_BackgroundTexture);
+	//ALL TEXT RELATED
+	font.loadFromFile("sansation.ttf");
+	infoText.setFont(font);
+	infoText.setString("Press 'Esc' to EXIT");
+	infoText.setCharacterSize(80);
+	infoText.setFillColor(Color::White);
+	//ALL MUSIC RELATED
+	m_Music.openFromFile("music.wav");
+	m_Music.setVolume(30.f);
+	m_Music.setLoop(true);
+	m_Music.play();
 
 }
 

@@ -1,5 +1,5 @@
 #include "LudicrousEngine.h"
-#include <iostream>
+
 void LudicrousEngine::input()
 {
 	
@@ -28,7 +28,6 @@ void LudicrousEngine::input()
 	if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W))
 	{
 		m_actor.moveUp();
-		std::cout << "UP PRESSED" << std::endl;
 	}
 	else
 	{
@@ -37,7 +36,6 @@ void LudicrousEngine::input()
 	if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S))
 	{
 		m_actor.moveDown();
-		std::cout << "DOWN PRESSED" << std::endl;
 	}
 	else
 	{

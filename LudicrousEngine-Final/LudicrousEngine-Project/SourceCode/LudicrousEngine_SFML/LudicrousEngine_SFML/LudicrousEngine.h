@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "MyActor.h";
 
 using namespace sf;
@@ -10,7 +11,10 @@ private:
 	RenderWindow m_Window;
 	Sprite m_BackgroundSprite;
 	Texture m_BackgroundTexture;
+	Text infoText;
+	Font font;
 	MyActor m_actor;
+	Music m_Music;
 	void input();
 	void update(float dtAsSeconds);
 	void draw();
