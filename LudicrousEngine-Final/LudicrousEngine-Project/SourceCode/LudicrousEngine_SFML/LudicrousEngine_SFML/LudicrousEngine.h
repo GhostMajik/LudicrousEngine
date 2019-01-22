@@ -20,5 +20,6 @@ private:
 	void draw();
 public:
 	LudicrousEngine();
+	void initialize();
 	void start();
 };
