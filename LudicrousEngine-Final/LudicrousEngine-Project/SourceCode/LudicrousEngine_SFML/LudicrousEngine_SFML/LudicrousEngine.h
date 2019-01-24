@@ -22,4 +22,5 @@ public:
 	LudicrousEngine();
 	void initialize();
 	void start();
+	void checkSystemRequirements();
 };

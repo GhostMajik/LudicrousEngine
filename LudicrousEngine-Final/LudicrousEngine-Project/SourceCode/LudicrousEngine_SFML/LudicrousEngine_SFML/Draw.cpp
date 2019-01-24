@@ -1,5 +1,6 @@
 #include "LudicrousEngine.h"
 
+//DRAW FUNC
 void LudicrousEngine::draw()
 {
 	m_Window.clear(Color::White);

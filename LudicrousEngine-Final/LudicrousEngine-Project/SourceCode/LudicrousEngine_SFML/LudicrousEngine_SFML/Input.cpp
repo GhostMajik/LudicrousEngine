@@ -1,5 +1,6 @@
 #include "LudicrousEngine.h"
 
+//INPUT MANAGEMENT CLASS
 void LudicrousEngine::input()
 {
 	

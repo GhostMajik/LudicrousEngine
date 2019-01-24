@@ -1,19 +1,19 @@
 #include "LudicrousEngine.h"
+
 using namespace std;
 
-#include <Windows.h>
+#include <windows.h>
 #include <winnt.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 extern "C" {
 #include <Powrprof.h>
 }
 #pragma comment(lib, "Powrprof.lib")
 
-
-
-
-typedef struct _PROCESSOR_POWER_INFORMATION {
+typedef struct _PROCESSOR_POWER_INFORMATION 
+{
 	ULONG num;
 	ULONG maxMhz;
 	ULONG currMhz;
@@ -30,11 +30,12 @@ LudicrousEngine::LudicrousEngine()
 	resolution.y = VideoMode::getDesktopMode().height;
 
 	//INIT WINDOW
-	/*m_Window.create(VideoMode(resolution.x, resolution.y),
+	m_Window.create(VideoMode(resolution.x, resolution.y),
 		"Ludicrous Engine by Not Fast, Just Furious!",
-		Style::Fullscreen);*/
-
-	m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
+		Style::Fullscreen);
+	
+	//TEST WINDOW
+	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
 
 	//ALL TEXTURE RELATED
 	m_BackgroundTexture.loadFromFile("background.jpg");
@@ -54,43 +55,16 @@ LudicrousEngine::LudicrousEngine()
 	m_Music.play();
 
 }
-
+//INIT FUNC
 void LudicrousEngine::initialize()
 {
 	cout << "*******************************************************************" << endl;
 	cout << "*Ludicrous Engine - By Colin Pugh, Naveen Prasad and Christian Lee*" << endl;
 	cout << "*******************************************************************" << endl;
-	SYSTEM_INFO sysInfo;
-	GetSystemInfo(&sysInfo);
-	ULARGE_INTEGER ulFreeSpace;
-	ULARGE_INTEGER ulTotalSpace;
-	ULARGE_INTEGER ulTotalFreeSpace;
-	GetDiskFreeSpaceEx("C:", &ulFreeSpace, &ulTotalSpace, &ulTotalFreeSpace);
-
-	if (300 > (ulTotalFreeSpace.QuadPart / 1024 * 1024))
-		cout << "Insufficient Disk Space \nDisk Space Required Is: 300MB \nDisk Space Available: " << ulTotalFreeSpace.QuadPart / (1024 * 1024) << "MB" << endl;
-
-	else
-		cout << "Sufficient Disk Space \nDisk Space Required Is: 300MB \nDisk Space Available: " << ulTotalFreeSpace.QuadPart / (1024 * 1024) << "MB" << endl;
-
-	MEMORYSTATUSEX memoryStruct = {};
-	memoryStruct.dwLength = sizeof(memoryStruct);
-	GlobalMemoryStatusEx(&memoryStruct);
-
-	cout << "" << endl;
-	cout << "Physical Memory Available: " << memoryStruct.ullAvailPhys / (800 * 800) << "MB" << endl;
-	cout << "Virtual Memory Available : " << memoryStruct.ullAvailVirtual / (1024 * 1024) << "MB" << endl;
-
-	const int size = sysInfo.dwNumberOfProcessors * sizeof(PROCESSOR_POWER_INFORMATION);
-	LPBYTE pBuffer = new BYTE[size];
-	CallNtPowerInformation(ProcessorInformation, NULL, 0, pBuffer, size);
-	PPROCESSOR_POWER_INFORMATION ppi = (PPROCESSOR_POWER_INFORMATION)pBuffer;
-
-	cout << "" << endl;
-	cout << "Proccesor Speed: " << ppi->maxMhz << endl;
-	cout << "CPU Architecture: " << sysInfo.wProcessorArchitecture << endl;
+	checkSystemRequirements();	
 }
 
+//START FUNC
 void LudicrousEngine::start()
 {
 	Clock clock;
@@ -104,5 +78,28 @@ void LudicrousEngine::start()
 		input();
 		update(dtAsSeconds);
 		draw();
+	}
+}
+
+void LudicrousEngine::checkSystemRequirements()
+{
+	int requiredSpace = 300;
+	SYSTEM_INFO sysInfo;
+	ULARGE_INTEGER ulFreeSpace;
+	ULARGE_INTEGER ulTotalSpace;
+	ULARGE_INTEGER ulTotalFreeSpace;
+	std::string msgTxt;
+
+	GetDiskFreeSpaceEx("C:", &ulFreeSpace, &ulTotalSpace, &ulTotalFreeSpace);
+
+	int totalFreeSpaceInMb = (ulTotalFreeSpace.QuadPart / (1024 * 1024));
+
+	if (requiredSpace < totalFreeSpaceInMb)
+	{
+		cout << "Sufficient space. \nDisk space required: " << requiredSpace << "MB" << ".\nDisk space available: " << totalFreeSpaceInMb << "MB" << endl;
+	}
+	else
+	{
+		cout << "Insufficient space. \nDisk space required: " << requiredSpace << "MB" << ".\nDisk space available: " << totalFreeSpaceInMb << "MB" << endl;
 	}
 }

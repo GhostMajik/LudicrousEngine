@@ -1,5 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include "LudicrousEngine.h"
+
 int main()
 {
 	LudicrousEngine engine;
