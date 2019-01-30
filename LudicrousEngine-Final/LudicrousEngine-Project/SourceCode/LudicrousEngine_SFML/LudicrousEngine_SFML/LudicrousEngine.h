@@ -11,6 +11,8 @@ private:
 	RenderWindow m_Window;
 	Sprite m_BackgroundSprite;
 	Texture m_BackgroundTexture;
+	Texture m_SplashScreen;
+	Sprite m_SplashScreenSprite;
 	Text infoText;
 	Font font;
 	MyActor m_actor;

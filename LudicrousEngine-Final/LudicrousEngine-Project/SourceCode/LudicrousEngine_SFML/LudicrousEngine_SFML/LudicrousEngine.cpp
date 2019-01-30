@@ -40,6 +40,9 @@ LudicrousEngine::LudicrousEngine()
 	//ALL TEXTURE RELATED
 	m_BackgroundTexture.loadFromFile("background.jpg");
 	m_BackgroundSprite.setTexture(m_BackgroundTexture);
+
+	m_SplashScreen.loadFromFile("splash.png");
+	m_SplashScreenSprite.setTexture(m_SplashScreen);
 	
 	//ALL TEXT RELATED
 	font.loadFromFile("sansation.ttf");
@@ -62,6 +65,8 @@ void LudicrousEngine::initialize()
 	cout << "*Ludicrous Engine - By Colin Pugh, Naveen Prasad and Christian Lee*" << endl;
 	cout << "*******************************************************************" << endl;
 	checkSystemRequirements();	
+	cout << "*******************************************************************" << endl;
+
 }
 
 //START FUNC
