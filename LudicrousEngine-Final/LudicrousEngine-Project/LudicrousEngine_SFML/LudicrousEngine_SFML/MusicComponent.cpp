@@ -8,9 +8,8 @@ MusicComponent::MusicComponent() {
 
 
 void MusicComponent::SetMusic(std::string filename) {
-	if (!music.openFromFile("filename")) {
-		return
-	}
+	if (!music.openFromFile("filename"))
+		return;
 	else
 		PlayMusic();
 }
