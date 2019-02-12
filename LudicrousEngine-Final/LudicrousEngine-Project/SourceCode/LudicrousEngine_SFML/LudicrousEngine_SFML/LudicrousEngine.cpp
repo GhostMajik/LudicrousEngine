@@ -1,6 +1,10 @@
 #include "LudicrousEngine.h"
 #include "AudioComponent.h"
 #include "ParticleSystem.h"
+#include <random>
+#include <functional>
+#include <cstdlib>
+#include <cmath>
 using namespace std;
 
 #include <windows.h>
@@ -14,7 +18,7 @@ extern "C" {
 #pragma comment(lib, "Powrprof.lib")
 
 float splashTimer = 100.0f;
-
+Vector2f resolution;
 
 typedef struct _PROCESSOR_POWER_INFORMATION 
 {
@@ -29,7 +33,6 @@ typedef struct _PROCESSOR_POWER_INFORMATION
 LudicrousEngine::LudicrousEngine()
 {
 	//GET RESOLUTION
-	Vector2f resolution;
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
 
@@ -75,32 +78,79 @@ void LudicrousEngine::initialize()
 void LudicrousEngine::start()
 {
 	AudioComponent::PlayMusic("music.wav");
-	ParticleSystem pSystem(1000);
-	Clock clock;
+	ParticleSystem pSystem(5000);
+
+	const float ball_radius = 30.0f;
+	const int bpp = 32;
+
+	std::random_device seed_device;
+	std::default_random_engine engine(seed_device());
+	std::uniform_int_distribution<int> distribution(-16, 16);
+	auto random = std::bind(distribution, std::ref(engine));
+
+	sf::Vector2f direction(random(), random());
+	const float velocity = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+
+	sf::CircleShape ball(ball_radius - 4);
+	ball.setOutlineThickness(4);
+	ball.setOutlineColor(sf::Color::Black);
+	ball.setFillColor(sf::Color::Red);
+	ball.setOrigin(ball.getRadius(), ball.getRadius());
+	ball.setPosition(500, 500);
+
+	sf::Clock clock;
+	sf::Time elapsed = clock.restart();
+	const sf::Time update_ms = sf::seconds(1.f / 100.f);
 
 	while (m_Window.isOpen())
 	{
 		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
 		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
-
-		Time dt = clock.restart();
-		pSystem.update(dt);
-		float dtAsSeconds = dt.asSeconds();
+		float dtAsSeconds = elapsed.asSeconds();
 		input();
 		update(dtAsSeconds);
-		//draw();
-		m_Window.clear(Color::White);
-		m_Window.draw(m_SplashScreenSprite);
-		splashTimer -= 0.01f;
+		pSystem.update(elapsed);
+		elapsed += clock.restart();
+		while (elapsed >= update_ms) {
+			const auto pos = ball.getPosition();
+			const auto delta = update_ms.asSeconds() * velocity;
+			sf::Vector2f new_pos(pos.x + direction.x * delta, pos.y + direction.y * delta);
 
-		if (splashTimer <= 0.0f)
-		{
+			if (new_pos.x - ball_radius < 0) { // left window edge
+				direction.x *= -1;
+				new_pos.x = 0 + ball_radius;
+			}
+			else if (new_pos.x + ball_radius >= resolution.x) { // right window edge
+				direction.x *= -1;
+				new_pos.x = resolution.x - ball_radius;
+			}
+			else if (new_pos.y - ball_radius < 0) { // top of window
+				direction.y *= -1;
+				new_pos.y = 0 + ball_radius;
+			}
+			else if (new_pos.y + ball_radius >= resolution.y) { // bottom of window
+				direction.y *= -1;
+				new_pos.y = resolution.y - ball_radius;
+			}
+			ball.setPosition(new_pos);
+
+			elapsed -= update_ms;
+		}
+		m_Window.clear(Color::White);
+		//m_Window.draw(m_SplashScreenSprite);
+		//splashTimer -= 0.01f;
+
+		//if (splashTimer <= 0.0f)
+		//{
 			m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(pSystem);
 			m_Window.draw(m_actor.getSprite());
 			m_Window.draw(infoText);
-			m_Window.draw(pSystem);
+			m_Window.draw(ball);
 
-		}
+
+		//}
 		m_Window.display();
 	}
 }
