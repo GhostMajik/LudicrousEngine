@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioComponent.h" />
+    <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="LudicrousEngine.h" />
     <ClInclude Include="MyActor.h" />
     <ClInclude Include="PhysicsRBody.h" />
