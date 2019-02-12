@@ -34,6 +34,8 @@ LudicrousEngine::LudicrousEngine()
 		"Ludicrous Engine by Not Fast, Just Furious!",
 		Style::Fullscreen);
 	
+	m_Window.setMouseCursorVisible(false);
+
 	//TEST WINDOW
 	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
 

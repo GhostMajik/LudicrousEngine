@@ -33,12 +33,18 @@
     <ClCompile Include="Draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsRBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyActor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LudicrousEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsRBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

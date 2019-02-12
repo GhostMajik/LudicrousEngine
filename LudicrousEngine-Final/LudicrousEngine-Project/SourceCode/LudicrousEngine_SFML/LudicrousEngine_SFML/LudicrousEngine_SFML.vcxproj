@@ -140,11 +140,13 @@
     <ClCompile Include="LudicrousEngine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyActor.cpp" />
+    <ClCompile Include="PhysicsRBody.cpp" />
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LudicrousEngine.h" />
     <ClInclude Include="MyActor.h" />
+    <ClInclude Include="PhysicsRBody.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
