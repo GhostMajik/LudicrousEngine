@@ -9,6 +9,11 @@ void LudicrousEngine::input()
 		m_Window.close();
 	}
 
+	if (Keyboard::isKeyPressed(Keyboard::Space))
+	{
+		m_actor.shotFired();
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::Left)|| Keyboard::isKeyPressed(Keyboard::A))
 	{
 		m_actor.moveLeft();

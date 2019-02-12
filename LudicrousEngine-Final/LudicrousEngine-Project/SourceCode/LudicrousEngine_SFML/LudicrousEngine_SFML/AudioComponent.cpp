@@ -26,6 +26,7 @@ void AudioComponent::PlayMusic(std::string filename)
 		printf("AUDIO ERROR\n");
 		return; 
 	}
+	music.setVolume(50.0f);
 	music.play();
 }
 

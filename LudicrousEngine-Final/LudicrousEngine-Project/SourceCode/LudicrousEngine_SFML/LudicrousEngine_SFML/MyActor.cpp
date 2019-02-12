@@ -1,5 +1,5 @@
 #include "MyActor.h"
-
+#include "AudioComponent.h"
 MyActor::MyActor()
 {
 	m_Speed = 800;
@@ -20,6 +20,11 @@ Sprite MyActor::getSprite()
 void MyActor::moveLeft()
 {
 	m_LeftPressed = true;
+}
+
+void MyActor::shotFired()
+{
+	AudioComponent::PlaySfx("boom.wav");
 }
 
 void MyActor::moveRight()
