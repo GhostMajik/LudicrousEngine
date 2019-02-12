@@ -1,4 +1,5 @@
 #include "LudicrousEngine.h"
+#include "AudioComponent.h"
 
 using namespace std;
 
@@ -40,10 +41,10 @@ LudicrousEngine::LudicrousEngine()
 	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
 
 	//ALL TEXTURE RELATED
-	m_BackgroundTexture.loadFromFile("background.jpg");
+	m_BackgroundTexture.loadFromFile("../Assets/background.jpg");
 	m_BackgroundSprite.setTexture(m_BackgroundTexture);
 
-	m_SplashScreen.loadFromFile("splash.png");
+	m_SplashScreen.loadFromFile("../Assets/splash.png");
 	m_SplashScreenSprite.setTexture(m_SplashScreen);
 	
 	//ALL TEXT RELATED
@@ -52,12 +53,6 @@ LudicrousEngine::LudicrousEngine()
 	infoText.setString("Press 'Esc' to EXIT");
 	infoText.setCharacterSize(80);
 	infoText.setFillColor(Color::White);
-	
-	//ALL MUSIC RELATED
-	m_Music.openFromFile("music.wav");
-	m_Music.setVolume(30.f);
-	m_Music.setLoop(true);
-	m_Music.play();
 
 }
 //INIT FUNC
@@ -74,6 +69,8 @@ void LudicrousEngine::initialize()
 //START FUNC
 void LudicrousEngine::start()
 {
+	AudioComponent::PlayMusic("music.wav");
+
 	Clock clock;
 
 	while (m_Window.isOpen())

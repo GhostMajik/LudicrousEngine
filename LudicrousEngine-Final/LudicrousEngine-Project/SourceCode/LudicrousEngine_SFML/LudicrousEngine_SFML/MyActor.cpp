@@ -4,7 +4,7 @@ MyActor::MyActor()
 {
 	m_Speed = 800;
 
-	m_Texture.loadFromFile("actor.png");
+	m_Texture.loadFromFile("../Assets/actor.png");
 	m_Sprite.setTexture(m_Texture);
 
 	m_Position.x = 800;
