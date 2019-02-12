@@ -3,7 +3,7 @@
 
 void TransformComponent::Start()
 {
-
+	std::cout << "Transform Component Initialized" << std::endl;
 }
 
 void TransformComponent::Update()

@@ -1,6 +1,6 @@
 #include "LudicrousEngine.h"
 #include "AudioComponent.h"
-
+#include "ParticleSystem.h"
 using namespace std;
 
 #include <windows.h>
@@ -12,6 +12,9 @@ extern "C" {
 #include <Powrprof.h>
 }
 #pragma comment(lib, "Powrprof.lib")
+
+float splashTimer = 100.0f;
+
 
 typedef struct _PROCESSOR_POWER_INFORMATION 
 {
@@ -37,6 +40,7 @@ LudicrousEngine::LudicrousEngine()
 	
 	m_Window.setMouseCursorVisible(false);
 
+
 	//TEST WINDOW
 	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
 
@@ -54,6 +58,8 @@ LudicrousEngine::LudicrousEngine()
 	infoText.setCharacterSize(80);
 	infoText.setFillColor(Color::White);
 
+
+
 }
 //INIT FUNC
 void LudicrousEngine::initialize()
@@ -65,23 +71,37 @@ void LudicrousEngine::initialize()
 	cout << "*******************************************************************" << endl;
 
 }
-
 //START FUNC
 void LudicrousEngine::start()
 {
 	AudioComponent::PlayMusic("music.wav");
-
+	ParticleSystem pSystem(1000);
 	Clock clock;
 
 	while (m_Window.isOpen())
 	{
+		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
+		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
+
 		Time dt = clock.restart();
-
+		pSystem.update(dt);
 		float dtAsSeconds = dt.asSeconds();
-
 		input();
 		update(dtAsSeconds);
-		draw();
+		//draw();
+		m_Window.clear(Color::White);
+		m_Window.draw(m_SplashScreenSprite);
+		splashTimer -= 0.01f;
+
+		if (splashTimer <= 0.0f)
+		{
+			m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(m_actor.getSprite());
+			m_Window.draw(infoText);
+			m_Window.draw(pSystem);
+
+		}
+		m_Window.display();
 	}
 }
 

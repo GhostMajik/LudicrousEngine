@@ -136,12 +136,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioComponent.cpp" />
+    <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LudicrousEngine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyActor.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PhysicsRBody.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="Update.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,7 +152,10 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="LudicrousEngine.h" />
     <ClInclude Include="MyActor.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PhysicsRBody.h" />
+    <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "MyActor.h";
-
+#include "ParticleSystem.h"
 using namespace sf;
 
 class LudicrousEngine
@@ -17,6 +17,7 @@ private:
 	Font font;
 	MyActor m_actor;
 	Music m_Music;
+	ParticleSystem pSystem(int count);
 	void input();
 	void update(float dtAsSeconds);
 	void draw();
