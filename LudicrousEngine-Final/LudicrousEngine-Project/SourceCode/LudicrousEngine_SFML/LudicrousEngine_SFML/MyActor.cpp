@@ -1,5 +1,6 @@
 #include "MyActor.h"
 #include "AudioComponent.h"
+#include "LudicrousEngine.h"
 MyActor::MyActor()
 {
 	m_Speed = 800;
@@ -9,6 +10,9 @@ MyActor::MyActor()
 
 	m_Position.x = 800;
 	m_Position.y = 800;
+
+	const int xSize = 150;
+	const int ySize = 190;
 
 }
 
@@ -58,26 +62,25 @@ void MyActor::stopDown()
 }
 void MyActor::update(float elapsedTime)
 {
-	if (m_RightPressed)
+	if (m_RightPressed && m_Position.x <= 1760)
 	{
 		m_Position.x += m_Speed * elapsedTime;
 	}
 
-	if (m_LeftPressed)
+	if (m_LeftPressed && m_Position.x > 10)
 	{
 		m_Position.x -= m_Speed * elapsedTime;
 	}
 
-	if (m_UpPressed)
+	if (m_UpPressed && m_Position.y > 10)
 	{
 		m_Position.y -= m_Speed * elapsedTime;
 	}
 
-	if (m_DownPressed)
+	if (m_DownPressed && m_Position.y <= 880)
 	{
 		m_Position.y += m_Speed * elapsedTime;
 	}
-
 	m_Sprite.setPosition(m_Position);
 
 }
