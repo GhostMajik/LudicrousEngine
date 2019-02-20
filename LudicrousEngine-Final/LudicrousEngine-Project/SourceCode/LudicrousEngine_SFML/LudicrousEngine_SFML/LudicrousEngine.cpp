@@ -130,10 +130,9 @@ void LudicrousEngine::start()
 	bs[0] = Ball();
 	bs[1] = Ball(sf::Vector2f(700, 300), sf::Vector2f(-120, -200), 20, GOLD);
 	bs[2] = Ball(sf::Vector2f(500, 500), sf::Vector2f(250, 100), 25, STONE);
-	bs[3] = Ball(sf::Vector2f(300, 450), 200, 91, 30, IRON);
-	bs[4] = Ball(sf::Vector2f(400, 100), 130, 280, 35, WOOD);
-	bs[5] = Ball(sf::Vector2f(700, 200), 130, 280, 35, GOLD);
-	bs[6] = Ball(sf::Vector2f(900, 50), 130, 280, 35, WOOD);
+	bs[3] = Ball(sf::Vector2f(400, 100), 130, 280, 35, WOOD);
+	bs[4] = Ball(sf::Vector2f(700, 200), 130, 280, 35, GOLD);
+	bs[5] = Ball(sf::Vector2f(900, 50), 130, 280, 35, WOOD);
 
 	bs[0].set_position(40, 280);
 	bs[0].set_radius(25);
@@ -200,11 +199,11 @@ void LudicrousEngine::start()
 		shader.setUniform("time", clk.getElapsedTime().asSeconds());
 		shader.setUniform("mouse", sf::Vector2f(resolution.x / 2, resolution.y / 2));
 		m_Window.clear(Color::White);
-		//m_Window.draw(m_SplashScreenSprite);
-		splashTimer -= 0.01f;
+		m_Window.draw(m_SplashScreenSprite);
+		splashTimer -= 0.05f;
 
-		//if (splashTimer <= 0.0f)
-		//{
+		if (splashTimer <= 0.0f)
+		{
 			m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(spr, &shader);
 
@@ -223,7 +222,7 @@ void LudicrousEngine::start()
 			m_Window.draw(rectangle);
 
 
-		//}
+		}
 		m_Window.display();
 	}
 }

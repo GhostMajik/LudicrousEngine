@@ -7,7 +7,7 @@ MyActor::MyActor()
 
 	m_Texture.loadFromFile("../Assets/actor.png");
 	m_Sprite.setTexture(m_Texture);
-
+	m_Texture.setSmooth(true);
 	m_Position.x = 800;
 	m_Position.y = 800;
 
