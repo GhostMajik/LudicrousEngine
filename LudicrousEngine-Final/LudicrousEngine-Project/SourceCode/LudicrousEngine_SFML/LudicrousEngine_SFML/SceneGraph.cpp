@@ -6,18 +6,12 @@ GameObject* SceneGraph::CreateObject(sf::Texture texture, bool isKinematic, Vect
 {
 	std::cout << "Scene Graph is Creating GameObject" << std::endl;
 
-	// Add obj to m_objects and increase the id for the next obj
 	GameObject* obj = new GameObject(nextObjectID, texture, isKinematic, pos);
 	m_Objects.insert(std::make_pair(nextObjectID, obj));
-	//m_Objects[obj->m_ID] = obj;
+
 	nextObjectID++;
 
-	// Add render component to our list (for passing to the display class)
 	renderComponents.push_back(obj->m_Render);
-	//std::cout << "render components size: " << renderComponents.size() << std::endl;
-
-	// Pass rb component to physics engine
-	//LudicrousPhysics::AddRigidBody(obj->m_RigidBody);
 
 	return obj;
 }

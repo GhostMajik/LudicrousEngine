@@ -151,6 +151,8 @@ void LudicrousEngine::start()
 
 	sf::Clock clock;
 	sf::Clock clk;
+	sf::Clock fpsClock;
+	float lastTime;
 	clk.restart();
 	sf::Time elapsed = clock.restart();
 	const sf::Time update_ms = sf::seconds(1.f / 120.f);
@@ -158,6 +160,11 @@ void LudicrousEngine::start()
 	while (m_Window.isOpen())
 	{
 
+		//Calculate FPS
+		float currentTime = clock.restart().asSeconds();
+		float fps = 1.f / currentTime;
+		lastTime = currentTime;
+		infoText.setString("FPS: ");
 
 		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
 		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
@@ -205,7 +212,7 @@ void LudicrousEngine::start()
 		if (splashTimer <= 0.0f)
 		{
 			m_Window.draw(m_BackgroundSprite);
-			m_Window.draw(spr, &shader);
+			//m_Window.draw(spr, &shader);
 
 			m_Window.draw(border);
 
