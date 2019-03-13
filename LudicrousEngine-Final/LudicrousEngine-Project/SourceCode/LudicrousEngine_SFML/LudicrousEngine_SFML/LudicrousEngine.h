@@ -14,9 +14,12 @@ private:
 	Texture m_SplashScreen;
 	Sprite m_SplashScreenSprite;
 	Text infoText;
+	Text MenuHeader;
+	Text MenuIntro;
 	Font font;
 	MyActor m_actor;
 	Music m_Music;
+	Music m_menuMusic;
 	ParticleSystem pSystem(int count);
 	void input();
 	void update(float dtAsSeconds);

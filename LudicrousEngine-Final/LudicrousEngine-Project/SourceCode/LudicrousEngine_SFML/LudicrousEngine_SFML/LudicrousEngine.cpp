@@ -1,3 +1,4 @@
+#pragma region INCLUDES
 #include "LudicrousEngine.h"
 #include "AudioComponent.h"
 #include "ParticleSystem.h"
@@ -12,7 +13,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <sstream>
-
+#include "SceneManager.h"
 const int NUM_BALLS = 10;
 const int NUM_WALLS = 5;
 const int BT = 8;
@@ -34,6 +35,8 @@ typedef struct _PROCESSOR_POWER_INFORMATION
 	ULONG maxIdle;
 	ULONG currIdle;
 } PROCESSOR_POWER_INFORMATION, *PPROCESSOR_POWER_INFORMATION;
+
+#pragma endregion INCLUDES
 
 LudicrousEngine::LudicrousEngine()
 {
@@ -63,10 +66,26 @@ LudicrousEngine::LudicrousEngine()
 	font.loadFromFile("sansation.ttf");
 	infoText.setFont(font);
 	infoText.setString("Press 'Esc' to EXIT");
-	infoText.setCharacterSize(80);
+	infoText.setCharacterSize(50);
 	infoText.setFillColor(Color::White);
 	infoText.setPosition(20, 0);
 
+	MenuHeader.setFont(font);
+	MenuHeader.setString("BALLS OF FURY");
+	MenuHeader.setCharacterSize(150);
+	MenuHeader.setFillColor(Color::White);
+	MenuHeader.setPosition(resolution.x/2-600, 100);
+
+	MenuIntro.setFont(font);
+	MenuIntro.setString("PRESS 'ENTER' TO PLAY");
+	MenuIntro.setCharacterSize(50);
+	MenuIntro.setFillColor(Color::White);
+	MenuIntro.setPosition(resolution.x/2-270, resolution.y/2+400);
+
+
+
+
+	AudioComponent::PlayMusic("menuNew.ogg");
 
 }
 //INIT FUNC
@@ -83,10 +102,9 @@ void LudicrousEngine::initialize()
 //START FUNC
 void LudicrousEngine::start()
 {
-	AudioComponent::PlayMusic("music.wav");
 	ParticleSystem pSystem(5000);
-
-
+	SCENE scene = SPLASH;
+	int GAME_STATE = SPLASH;
 	sf::Texture tex;
 	tex.create(resolution.x, resolution.y);
 	sf::Sprite spr(tex);
@@ -164,7 +182,6 @@ void LudicrousEngine::start()
 		float currentTime = clock.restart().asSeconds();
 		float fps = 1.f / currentTime;
 		lastTime = currentTime;
-		infoText.setString("FPS: ");
 
 		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
 		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
@@ -206,14 +223,33 @@ void LudicrousEngine::start()
 		shader.setUniform("time", clk.getElapsedTime().asSeconds());
 		shader.setUniform("mouse", sf::Vector2f(resolution.x / 2, resolution.y / 2));
 		m_Window.clear(Color::White);
-		m_Window.draw(m_SplashScreenSprite);
-		splashTimer -= 0.05f;
-
-		if (splashTimer <= 0.0f)
+		
+		
+		if (GAME_STATE == SPLASH)
+		{
+			m_Window.draw(m_SplashScreenSprite);
+			splashTimer -= 0.05f;
+			if (splashTimer <= 0.0f)
+			{
+				GAME_STATE = MENU;
+			}
+		}
+		if (GAME_STATE == MENU)
 		{
 			m_Window.draw(m_BackgroundSprite);
-			//m_Window.draw(spr, &shader);
+			m_Window.draw(MenuHeader);
+			m_Window.draw(MenuIntro);
+			if (Keyboard::isKeyPressed(Keyboard::Enter))
+			{			
+				GAME_STATE = GAME;
+				AudioComponent::PlayMusic("music.wav");
+			}
 
+		}
+		if (GAME_STATE == GAME)
+		{
+			//m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(spr, &shader);	
 			m_Window.draw(border);
 
 			for (i = 0; i < NUM_WALLS; i++)
@@ -228,8 +264,8 @@ void LudicrousEngine::start()
 			m_Window.draw(infoText);
 			m_Window.draw(rectangle);
 
-
-		}
+		}		
+		
 		m_Window.display();
 	}
 }
