@@ -1,12 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
 using namespace sf;
 
 class MyActor {
 
 private:
-	Vector2f m_Position;
 	Sprite m_Sprite;
 	Texture m_Texture;
 	bool m_LeftPressed;
@@ -14,9 +12,11 @@ private:
 	bool m_UpPressed;
 	bool m_DownPressed;
 	float m_Speed;
+	sf::RectangleShape rectangle;
 
 public:
 	MyActor();
+	Vector2f m_Position;
 	Sprite getSprite();
 	void moveLeft();
 	void moveRight();

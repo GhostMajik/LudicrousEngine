@@ -1,21 +1,24 @@
 #pragma once
-#include <iostream>
-#include <map>
 #include <list>
+#include <map>
+#include <iostream>
 
+#include "PhysicsRBody.h"
 #include "GameObject.h"
-using namespace std;
+//#include "Vector2.h"
+
+
 class SceneGraph
 {
 public:
-	GameObject* CreateGameObject(sf::Texture texture, Vector2 position, bool isKinematic);
+	GameObject* CreateObject(sf::Texture texture, bool isKinematic, Vector2 pos);
+
 	void Start();
 	void Update(sf::Time deltaTime);
 
-	list<RenderComponent*> renderComponents;
+	std::list<RenderComponent*> renderComponents;
 
 private:
-	map<int, GameObject*> m_GameObjects;
-	static int nextObjectId;
+	std::map<int, GameObject*> m_Objects;
+	static int nextObjectID;
 };
-

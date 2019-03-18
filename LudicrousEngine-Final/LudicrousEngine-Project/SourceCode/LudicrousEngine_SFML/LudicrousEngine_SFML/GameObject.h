@@ -1,28 +1,55 @@
 #pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
+#pragma once
+#include <list>
+#include <vector>
+#include <iterator>
+
+#include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
+#include "Vector2.h"
 #include "BaseComponent.h"
 #include "TransformComponent.h"
 #include "RenderComponent.h"
 #include "PhysicsRBody.h"
 
+
 class GameObject
 {
 public:
-	TransformComponent* m_transform;
-	PhysicsRBody* m_rBody;
-	RenderComponent* m_renderer;
+	TransformComponent* m_Transform;
+	//PhysicsRBody* m_RigidBody;
+	RenderComponent* m_Render;
 
+	int m_ID; // made this public for physics component, can remove GetObjID()
+
+private:
+	GameObject* m_Parent;
+	std::vector<GameObject*> m_Children;
+
+	sf::Transform identityMatrix;
+	sf::Transform worldTransform;
+
+	sf::Texture m_texture;
+
+public:
 	GameObject() {}
-	GameObject(int objId, sf::Texture texture, bool isKinematic, Vector2 position)
-		: m_ObjectId(objId),m_Parent(NULL), m_texture(texture) {
-		m_transform = new TransformComponent();
-		m_transform->m_Position = position;
-		m_transform->Start();
-		m_renderer = new RenderComponent(m_transform, m_texture);
-		m_renderer->Start();
-		//need to update physics rigidbody class to implement components
-		//m_rBody = new PhysicsRBody(m_transform, m_renderer, isKinematic, m_ObjectId);
-		//m_rBody->Start();
+	GameObject(int objID, sf::Texture texture, bool isKinematic, Vector2 pos) : m_ID(objID), m_Parent(NULL), m_texture(texture)
+	{
+		m_Transform = new TransformComponent();
+		m_Transform->m_Position = pos;
+		m_Transform->Start();
+		m_Render = new RenderComponent(m_Transform, m_texture);
+		m_Render->Start();
+		//m_RigidBody = new PhysicsRBody(m_Transform, m_Render, isKinematic, m_ID);
+		//m_RigidBody->Start();
 	}
+
+	// Get/Set
+	int GetObjID() { return m_ID; }
 
 	void SetParent(GameObject& parent);
 	void AddChild(GameObject* child);
@@ -30,16 +57,8 @@ public:
 	void Start();
 	void Update(sf::Time deltaTime);
 
-	//gameobject ID#
-	int m_ObjectId;
-
-	~GameObject() {}
 private:
-	GameObject* m_Parent;
-	std::vector<GameObject*> m_Children;
 
-	sf::Transform worldMatrix;
-	sf::Transform idMatrix;
-	sf::Texture m_texture;
 };
 
+#endif

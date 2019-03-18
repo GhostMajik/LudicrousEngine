@@ -7,6 +7,7 @@ sf::Sound AudioComponent::sound;
 
 AudioComponent::AudioComponent()
 {
+	std::cout << "Audio Component constructor called..." << std::endl;
 }
 
 AudioComponent::~AudioComponent()

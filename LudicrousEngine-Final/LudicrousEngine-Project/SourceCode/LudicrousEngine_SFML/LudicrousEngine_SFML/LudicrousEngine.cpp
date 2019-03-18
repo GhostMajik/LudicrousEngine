@@ -1,3 +1,4 @@
+#pragma region INCLUDES
 #include "LudicrousEngine.h"
 #include "AudioComponent.h"
 #include "ParticleSystem.h"
@@ -6,12 +7,17 @@
 #include <cstdlib>
 #include <cmath>
 using namespace std;
-
+#include "ball.h"
 #include <windows.h>
 #include <winnt.h>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "SceneManager.h"
+const int NUM_BALLS = 10;
+const int NUM_WALLS = 5;
+const int BT = 8;
+
 extern "C" {
 #include <Powrprof.h>
 }
@@ -19,6 +25,7 @@ extern "C" {
 
 float splashTimer = 100.0f;
 Vector2f resolution;
+SceneGraph LudicrousEngine::m_sceneGraph;
 
 typedef struct _PROCESSOR_POWER_INFORMATION 
 {
@@ -30,19 +37,23 @@ typedef struct _PROCESSOR_POWER_INFORMATION
 	ULONG currIdle;
 } PROCESSOR_POWER_INFORMATION, *PPROCESSOR_POWER_INFORMATION;
 
+#pragma endregion INCLUDES
+
 LudicrousEngine::LudicrousEngine()
 {
+
+	//Init Graphics Display System
+	//graphicsDisplay.Init();
+
 	//GET RESOLUTION
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
-
 	//INIT WINDOW
 	m_Window.create(VideoMode(resolution.x, resolution.y),
 		"Ludicrous Engine by Not Fast, Just Furious!",
 		Style::Fullscreen);
 	
 	m_Window.setMouseCursorVisible(false);
-
 
 	//TEST WINDOW
 	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
@@ -58,10 +69,26 @@ LudicrousEngine::LudicrousEngine()
 	font.loadFromFile("sansation.ttf");
 	infoText.setFont(font);
 	infoText.setString("Press 'Esc' to EXIT");
-	infoText.setCharacterSize(80);
+	infoText.setCharacterSize(50);
 	infoText.setFillColor(Color::White);
+	infoText.setPosition(20, 0);
+
+	MenuHeader.setFont(font);
+	MenuHeader.setString("BALLS OF FURY");
+	MenuHeader.setCharacterSize(150);
+	MenuHeader.setFillColor(Color::White);
+	MenuHeader.setPosition(resolution.x/2-600, 100);
+
+	MenuIntro.setFont(font);
+	MenuIntro.setString("PRESS 'ENTER' TO PLAY");
+	MenuIntro.setCharacterSize(50);
+	MenuIntro.setFillColor(Color::White);
+	MenuIntro.setPosition(resolution.x/2-270, resolution.y/2+400);
+
+	
 
 
+	AudioComponent::PlayMusic("menuNew.ogg");
 
 }
 //INIT FUNC
@@ -71,14 +98,31 @@ void LudicrousEngine::initialize()
 	cout << "*Ludicrous Engine - By Colin Pugh, Naveen Prasad and Christian Lee*" << endl;
 	cout << "*******************************************************************" << endl;
 	checkSystemRequirements();	
+	cout << "xResolution: " << resolution.x << " yResolution: " << resolution.y << endl;
 	cout << "*******************************************************************" << endl;
+
+	//init and start scene graph
+	GraphicsDisplay::Init(m_sceneGraph);
+	m_sceneGraph.Start();
 
 }
 //START FUNC
 void LudicrousEngine::start()
 {
-	AudioComponent::PlayMusic("music.wav");
 	ParticleSystem pSystem(5000);
+	SCENE scene = SPLASH;
+	int GAME_STATE = SPLASH;
+	sf::Texture tex;
+	tex.create(resolution.x, resolution.y);
+	sf::Sprite spr(tex);
+
+	sf::Shader shader;
+	shader.loadFromFile("fire.glsl", sf::Shader::Fragment); // load the shader
+
+	if (!shader.isAvailable()) {
+		std::cout << "The shader is not available\n";
+	}
+	shader.setUniform("resolution", sf::Vector2f(resolution.x / 1.5, resolution.y));
 
 	const float ball_radius = 30.0f;
 	const int bpp = 32;
@@ -91,66 +135,155 @@ void LudicrousEngine::start()
 	sf::Vector2f direction(random(), random());
 	const float velocity = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
+	//create the player and add to the scene graph
+	m_player = m_sceneGraph.CreateObject(*m_actor.getSprite().getTexture(), true, Vector2(resolution.x / 2, resolution.y / 2));
 
-	sf::CircleShape ball(ball_radius - 4);
-	ball.setOutlineThickness(4);
-	ball.setOutlineColor(sf::Color::Black);
-	ball.setFillColor(sf::Color::Red);
-	ball.setOrigin(ball.getRadius(), ball.getRadius());
-	ball.setPosition(500, 500);
+	//should add other gameobjects to scene here, or in function to call during update if a new object is added at runtime
+		
+
+	sf::RectangleShape rectangle;
+	rectangle.setSize(sf::Vector2f(150, 190));
+	rectangle.setOutlineColor(sf::Color::Green);
+	rectangle.setOutlineThickness(1);
+	rectangle.setFillColor(sf::Color::Transparent);
+	rectangle.setOrigin(0,0);
+
+	sf::RectangleShape border;
+	border.setPosition(sf::Vector2f(BT, BT));
+	border.setSize(sf::Vector2f(1900, 1060));
+	border.setOutlineThickness(BT);
+	border.setOutlineColor(sf::Color::Cyan);
+	border.setFillColor(sf::Color::Transparent);
+
+	Ball bs[NUM_BALLS];
+	Wall ws[NUM_WALLS];
+
+	bs[0] = Ball();
+	bs[1] = Ball(sf::Vector2f(700, 300), sf::Vector2f(-120, -200), 20, GOLD);
+	bs[2] = Ball(sf::Vector2f(500, 500), sf::Vector2f(250, 100), 25, STONE);
+	bs[3] = Ball(sf::Vector2f(400, 100), 130, 280, 35, WOOD);
+	bs[4] = Ball(sf::Vector2f(700, 200), 130, 280, 35, GOLD);
+	bs[5] = Ball(sf::Vector2f(900, 50), 130, 280, 35, WOOD);
+
+	bs[0].set_position(40, 280);
+	bs[0].set_radius(25);
+	bs[0].set_angle(280);
+	bs[0].set_speed(-600);
+
+	ws[0] = Wall(sf::Vector2f(180, 260), sf::Vector2f(310, 180));
+	ws[1] = Wall(sf::Vector2f(540, 400), ws[0]);
+	ws[2] = Wall(sf::Vector2f(840, 600), ws[0]);
+	ws[3] = Wall(sf::Vector2f(1040, 900), ws[0]);
+
+	int i, j;
+	float r;
+	sf::Vector2f pos, vel;
+
 
 	sf::Clock clock;
+	sf::Clock clk;
+	sf::Clock fpsClock;
+	float lastTime;
+	clk.restart();
 	sf::Time elapsed = clock.restart();
-	const sf::Time update_ms = sf::seconds(1.f / 100.f);
+	const sf::Time update_ms = sf::seconds(1.f / 120.f);
 
 	while (m_Window.isOpen())
 	{
+
+		//Calculate FPS
+		float currentTime = clock.restart().asSeconds();
+		float fps = 1.f / currentTime;
+		lastTime = currentTime;
+
 		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
 		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
 		float dtAsSeconds = elapsed.asSeconds();
 		input();
 		update(dtAsSeconds);
+
+		//update scene graph
+		//m_sceneGraph.Update(sf::Time deltaTime);
+
 		pSystem.update(elapsed);
 		elapsed += clock.restart();
 		while (elapsed >= update_ms) {
-			const auto pos = ball.getPosition();
-			const auto delta = update_ms.asSeconds() * velocity;
-			sf::Vector2f new_pos(pos.x + direction.x * delta, pos.y + direction.y * delta);
 
-			if (new_pos.x - ball_radius < 0) { // left window edge
-				direction.x *= -1;
-				new_pos.x = 0 + ball_radius;
-			}
-			else if (new_pos.x + ball_radius >= resolution.x) { // right window edge
-				direction.x *= -1;
-				new_pos.x = resolution.x - ball_radius;
-			}
-			else if (new_pos.y - ball_radius < 0) { // top of window
-				direction.y *= -1;
-				new_pos.y = 0 + ball_radius;
-			}
-			else if (new_pos.y + ball_radius >= resolution.y) { // bottom of window
-				direction.y *= -1;
-				new_pos.y = resolution.y - ball_radius;
-			}
-			ball.setPosition(new_pos);
-
+			rectangle.setPosition(m_actor.m_Position.x, m_actor.m_Position.y);
 			elapsed -= update_ms;
 		}
-		m_Window.clear(Color::White);
-		//m_Window.draw(m_SplashScreenSprite);
-		//splashTimer -= 0.01f;
 
-		//if (splashTimer <= 0.0f)
-		//{
+
+		for (i = 0; i < NUM_BALLS; i++)
+		{
+			bs[i].update_position(elapsed);
+			pos = bs[i].get_position();
+			vel = bs[i].get_velocity();
+			r = bs[i].get_radius();
+
+			if ((pos.x < BT + r && vel.x < 0) || (pos.x > resolution.x + BT - r && vel.x > 0))
+				bs[i].bounce(0);
+			if ((pos.y < BT + r && vel.y < 0) || (pos.y > resolution.y + BT - r && vel.y > 0))
+				bs[i].bounce(90);
+
+			for (j = 0; j < i; j++)
+			{
+				if (bs[i].is_colliding_with(bs[j]))
+					collide(bs[i], bs[j]);
+			}
+			for (j = 0; j < NUM_WALLS; j++)
+			{
+				if (bs[i].is_colliding_with(ws[j]))
+					collide(bs[i], ws[j]);
+			}
+		}
+		shader.setUniform("time", clk.getElapsedTime().asSeconds());
+		shader.setUniform("mouse", sf::Vector2f(resolution.x / 2, resolution.y / 2));
+		m_Window.clear(Color::White);
+		
+		
+		if (GAME_STATE == SPLASH)
+		{
+			m_Window.draw(m_SplashScreenSprite);
+			splashTimer -= 0.05f;
+			if (splashTimer <= 0.0f)
+			{
+				GAME_STATE = MENU;
+			}
+		}
+		if (GAME_STATE == MENU)
+		{
 			m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(MenuHeader);
+			m_Window.draw(MenuIntro);
+			if (Keyboard::isKeyPressed(Keyboard::Enter))
+			{			
+				GAME_STATE = GAME;
+				AudioComponent::PlayMusic("music.wav");
+			}
+
+		}
+		if (GAME_STATE == GAME)
+		{
+			//m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(spr, &shader);	
+			m_Window.draw(border);
+
+			for (i = 0; i < NUM_WALLS; i++)
+				m_Window.draw(ws[i].get_rectangleShape());
+
+			for (i = 0; i < NUM_BALLS; i++)
+				m_Window.draw(bs[i].get_circleShape());
+
 			m_Window.draw(pSystem);
+
 			m_Window.draw(m_actor.getSprite());
 			m_Window.draw(infoText);
-			m_Window.draw(ball);
+			m_Window.draw(rectangle);
 
-
-		//}
+		}		
+		//draw scene graph
+		//GraphicsDisplay::Draw(m_sceneGraph);
 		m_Window.display();
 	}
 }
