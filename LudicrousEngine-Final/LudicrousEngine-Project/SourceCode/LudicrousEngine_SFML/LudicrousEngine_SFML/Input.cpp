@@ -46,5 +46,4 @@ void LudicrousEngine::input()
 	{
 		m_actor.stopDown();
 	}
-
 }
