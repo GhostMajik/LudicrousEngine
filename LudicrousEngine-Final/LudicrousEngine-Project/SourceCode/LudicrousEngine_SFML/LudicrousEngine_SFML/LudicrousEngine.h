@@ -1,16 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "MyActor.h"
+#include "MyActor.h";
 #include "ParticleSystem.h"
-#include "GraphicsDisplay.h"
-#include "SceneGraph.h"
+#include "SceneManager.h"
 using namespace sf;
 
 class LudicrousEngine
 {
 private:
-	//GraphicsDisplay graphicsDisplay;
 	RenderWindow m_Window;
 	Sprite m_BackgroundSprite;
 	Texture m_BackgroundTexture;
@@ -24,14 +22,12 @@ private:
 	Music m_Music;
 	Music m_menuMusic;
 	ParticleSystem pSystem(int count);
-
-	//pass gameobject by pointer to scene graph
-	GameObject* m_player;
-	static SceneGraph m_sceneGraph;
-
 	void input();
 	void update(float dtAsSeconds);
 	void draw();
+	float score;
+	SCENE scene = SPLASH;
+	int GAME_STATE = SPLASH;
 public:
 	LudicrousEngine();
 	void initialize();

@@ -23,9 +23,8 @@ extern "C" {
 }
 #pragma comment(lib, "Powrprof.lib")
 
-float splashTimer = 100.0f;
+float splashTimer = 50.0f;
 Vector2f resolution;
-SceneGraph LudicrousEngine::m_sceneGraph;
 
 typedef struct _PROCESSOR_POWER_INFORMATION 
 {
@@ -41,22 +40,16 @@ typedef struct _PROCESSOR_POWER_INFORMATION
 
 LudicrousEngine::LudicrousEngine()
 {
-
-	//Init Graphics Display System
-	//graphicsDisplay.Init();
-
 	//GET RESOLUTION
 	resolution.x = VideoMode::getDesktopMode().width;
 	resolution.y = VideoMode::getDesktopMode().height;
+
 	//INIT WINDOW
 	m_Window.create(VideoMode(resolution.x, resolution.y),
 		"Ludicrous Engine by Not Fast, Just Furious!",
 		Style::Fullscreen);
 	
 	m_Window.setMouseCursorVisible(false);
-
-	//TEST WINDOW
-	//m_Window.create(sf::VideoMode(800, 200), "Hello from SFML");
 
 	//ALL TEXTURE RELATED
 	m_BackgroundTexture.loadFromFile("../Assets/background.jpg");
@@ -85,7 +78,7 @@ LudicrousEngine::LudicrousEngine()
 	MenuIntro.setFillColor(Color::White);
 	MenuIntro.setPosition(resolution.x/2-270, resolution.y/2+400);
 
-	
+
 
 
 	AudioComponent::PlayMusic("menuNew.ogg");
@@ -101,17 +94,14 @@ void LudicrousEngine::initialize()
 	cout << "xResolution: " << resolution.x << " yResolution: " << resolution.y << endl;
 	cout << "*******************************************************************" << endl;
 
-	//init and start scene graph
-	GraphicsDisplay::Init(m_sceneGraph);
-	m_sceneGraph.Start();
-
 }
 //START FUNC
 void LudicrousEngine::start()
 {
+	//***SETUP GAME***
 	ParticleSystem pSystem(5000);
-	SCENE scene = SPLASH;
-	int GAME_STATE = SPLASH;
+	//SCENE scene = SPLASH;
+	//int GAME_STATE = SPLASH;
 	sf::Texture tex;
 	tex.create(resolution.x, resolution.y);
 	sf::Sprite spr(tex);
@@ -130,16 +120,14 @@ void LudicrousEngine::start()
 	std::random_device seed_device;
 	std::default_random_engine engine(seed_device());
 	std::uniform_int_distribution<int> distribution(-16, 16);
+	std::uniform_int_distribution<int> posXDistribution(0, 1900);
+	std::uniform_int_distribution<int> posYDistribution(0, 1000);
 	auto random = std::bind(distribution, std::ref(engine));
+	auto randomPosX = std::bind(posXDistribution, std::ref(engine));
+	auto randomPosY = std::bind(posYDistribution, std::ref(engine));
 
 	sf::Vector2f direction(random(), random());
 	const float velocity = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-	//create the player and add to the scene graph
-	m_player = m_sceneGraph.CreateObject(*m_actor.getSprite().getTexture(), true, Vector2(resolution.x / 2, resolution.y / 2));
-
-	//should add other gameobjects to scene here, or in function to call during update if a new object is added at runtime
-		
 
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(150, 190));
@@ -163,7 +151,7 @@ void LudicrousEngine::start()
 	bs[2] = Ball(sf::Vector2f(500, 500), sf::Vector2f(250, 100), 25, STONE);
 	bs[3] = Ball(sf::Vector2f(400, 100), 130, 280, 35, WOOD);
 	bs[4] = Ball(sf::Vector2f(700, 200), 130, 280, 35, GOLD);
-	bs[5] = Ball(sf::Vector2f(900, 50), 130, 280, 35, WOOD);
+	bs[5] = Ball(sf::Vector2f(900, 50), 130, 280, 35, IRON);
 
 	bs[0].set_position(40, 280);
 	bs[0].set_radius(25);
@@ -188,6 +176,7 @@ void LudicrousEngine::start()
 	sf::Time elapsed = clock.restart();
 	const sf::Time update_ms = sf::seconds(1.f / 120.f);
 
+	//***RUN GAME ***
 	while (m_Window.isOpen())
 	{
 
@@ -196,15 +185,12 @@ void LudicrousEngine::start()
 		float fps = 1.f / currentTime;
 		lastTime = currentTime;
 
-		sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
-		pSystem.setEmitter(m_Window.mapPixelToCoords(mouse));
+		//sf::Vector2i mouse = sf::Mouse::getPosition(m_Window);
+		sf::Vector2f pPosition = m_actor.m_Position + sf::Vector2f(m_actor.getSprite().getTextureRect().width/2, m_actor.getSprite().getTextureRect().height - m_actor.getSprite().getTextureRect().height / 4);
+		pSystem.setEmitter(pPosition);
 		float dtAsSeconds = elapsed.asSeconds();
 		input();
 		update(dtAsSeconds);
-
-		//update scene graph
-		//m_sceneGraph.Update(sf::Time deltaTime);
-
 		pSystem.update(elapsed);
 		elapsed += clock.restart();
 		while (elapsed >= update_ms) {
@@ -236,6 +222,21 @@ void LudicrousEngine::start()
 				if (bs[i].is_colliding_with(ws[j]))
 					collide(bs[i], ws[j]);
 			}
+			if (bs[i].is_colliding_with(rectangle) && GAME_STATE == GAME) {
+				collide(bs[i], rectangle);
+				if (m_actor.canBeDamaged) {
+					m_actor.canBeDamaged = false;
+					m_actor.lives--;
+					sf::Clock dmgClock;
+					dmgClock.restart();
+					float dmgTimer = dmgClock.getElapsedTime().asSeconds();
+					if (dmgTimer >= 2) {
+						dmgTimer = 0;
+						m_actor.canBeDamaged = true;
+						dmgClock.restart();
+					}
+				}
+			}
 		}
 		shader.setUniform("time", clk.getElapsedTime().asSeconds());
 		shader.setUniform("mouse", sf::Vector2f(resolution.x / 2, resolution.y / 2));
@@ -256,6 +257,13 @@ void LudicrousEngine::start()
 			m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(MenuHeader);
 			m_Window.draw(MenuIntro);
+
+			//reset ball and player position to be able to replay game 
+			m_actor.m_Position = sf::Vector2f(800, 800);
+			m_actor.lives = 3;
+			for (i = 0; i < NUM_BALLS; i++) {
+				bs[i].set_position(randomPosX(), randomPosY());
+			}
 			if (Keyboard::isKeyPressed(Keyboard::Enter))
 			{			
 				GAME_STATE = GAME;
@@ -272,8 +280,9 @@ void LudicrousEngine::start()
 			for (i = 0; i < NUM_WALLS; i++)
 				m_Window.draw(ws[i].get_rectangleShape());
 
-			for (i = 0; i < NUM_BALLS; i++)
+			for (i = 0; i < NUM_BALLS; i++) {
 				m_Window.draw(bs[i].get_circleShape());
+			}
 
 			m_Window.draw(pSystem);
 
@@ -281,9 +290,15 @@ void LudicrousEngine::start()
 			m_Window.draw(infoText);
 			m_Window.draw(rectangle);
 
+			//THIS BLOCK IS TO SIMULATE LOSE CONDITION
+			if (m_actor.isDead)
+			{
+				GAME_STATE = MENU;
+				AudioComponent::PlayMusic("menuNew.ogg");
+			}
+
 		}		
-		//draw scene graph
-		//GraphicsDisplay::Draw(m_sceneGraph);
+		
 		m_Window.display();
 	}
 }

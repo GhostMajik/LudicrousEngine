@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "MyActor.h"
 #include <math.h>
 
 const bool STUTTER_PROTECTION = true;     
@@ -124,6 +125,7 @@ public:
 	bool is_colliding_with(const Ball &b) const;
 	bool is_colliding_with(const sf::Vector2f &point) const;
 	bool is_colliding_with(const Wall &w) const;
+	bool is_colliding_with(const sf::RectangleShape &rect) const;
 
 	void bounce(float ang);
 	void bounce_off_wall(const Wall &w);
@@ -132,6 +134,7 @@ public:
 
 	friend void collide(Ball &ball1, Ball &ball2);
 	friend void collide(Ball &b, Wall &w);
+	friend void collide(Ball &ball, sf::RectangleShape &rect);
 };
 
 int handle_error(int err_code);

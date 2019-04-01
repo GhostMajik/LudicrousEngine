@@ -18,6 +18,10 @@ public:
 	MyActor();
 	Vector2f m_Position;
 	Sprite getSprite();
+	float radius;
+	int lives = 3;
+	bool canBeDamaged;
+	bool isDead = false;
 	void moveLeft();
 	void moveRight();
 	void moveUp();

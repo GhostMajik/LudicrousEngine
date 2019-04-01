@@ -5,5 +5,6 @@ int main()
 	LudicrousEngine engine;
 	engine.initialize();
 	engine.start();
-	return 0;
+	
+	return EXIT_SUCCESS;
 }

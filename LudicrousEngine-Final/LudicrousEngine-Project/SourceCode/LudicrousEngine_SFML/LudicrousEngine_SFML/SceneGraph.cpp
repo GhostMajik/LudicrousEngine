@@ -12,8 +12,6 @@ GameObject* SceneGraph::CreateObject(sf::Texture texture, bool isKinematic, Vect
 	nextObjectID++;
 
 	renderComponents.push_back(obj->m_Render);
-	
-	//should add rigidbody to gameobject here ideally
 
 	return obj;
 }

@@ -140,7 +140,6 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GraphicsDisplay.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LudicrousEngine.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,7 +156,6 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CollisionPair.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GraphicsDisplay.h" />
     <ClInclude Include="LudicrousEngine.h" />
     <ClInclude Include="MyActor.h" />
     <ClInclude Include="ParticleSystem.h" />

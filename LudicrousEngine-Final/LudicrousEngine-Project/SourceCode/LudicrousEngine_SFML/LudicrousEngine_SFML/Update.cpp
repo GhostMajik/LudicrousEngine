@@ -1,4 +1,5 @@
 #include "LudicrousEngine.h"
+#include "SceneManager.h"
 
 using namespace sf;
 

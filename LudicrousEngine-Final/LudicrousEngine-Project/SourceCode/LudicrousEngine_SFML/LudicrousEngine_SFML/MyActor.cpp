@@ -13,7 +13,8 @@ MyActor::MyActor()
 
 	const int xSize = 150;
 	const int ySize = 190;
-
+	canBeDamaged = true;
+	isDead = false;
 }
 
 Sprite MyActor::getSprite()
@@ -62,6 +63,8 @@ void MyActor::stopDown()
 }
 void MyActor::update(float elapsedTime)
 {
+	if (lives <= 0)
+		isDead = true;
 	if (m_RightPressed && m_Position.x <= 1760)
 	{
 		m_Position.x += m_Speed * elapsedTime;

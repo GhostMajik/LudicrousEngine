@@ -363,6 +363,15 @@ bool Ball::is_colliding_with(const Wall &w) const
 	return false;
 }
 
+bool Ball::is_colliding_with(const sf::RectangleShape &rect) const
+{
+	sf::Vector2f rectPos = sf::Vector2f(rect.getGlobalBounds().width / 2, rect.getGlobalBounds().height / 2);
+	if (distance(position, rect.getPosition() + rectPos) - (radius + rect.getSize().x / 2) < 0) {
+		return true;
+	}
+	return false;
+}
+
 void Ball::bounce(float ang)
 {
 	float alpha = get_angle();
@@ -436,6 +445,27 @@ void collide(Ball &ball1, Ball &ball2)
 void collide(Ball &b, Wall &w)
 {
 	b.bounce_off_wall(w);
+}
+
+void collide(Ball &ball, sf::RectangleShape &rect)
+{
+	float m1 = ball.mass;
+	float m2 = 100;
+
+	sf::Vector2f ballVelocity = ball.velocity;
+//	sf::Vector2f playerVelocity = rect.getPosition();
+
+	sf::Vector2f ballPos = ball.position;
+	sf::Vector2f playerPos = rect.getPosition();
+
+	if (ballPos != playerPos) {
+		if (STUTTER_PROTECTION)
+		{
+			//sf::Vector2f pr = proj(playerVelocity - ball.velocity, playerPos - ballPos);
+			//ball.velocity = ball.velocity + 2 * m2 / (m1 + m2)*pr;
+			ball.velocity = ball.velocity * -1.0f;
+		}
+	}
 }
 
 int handle_error(int code)
