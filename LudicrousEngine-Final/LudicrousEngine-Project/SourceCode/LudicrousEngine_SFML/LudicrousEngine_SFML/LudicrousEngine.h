@@ -18,6 +18,7 @@ private:
 	Text MenuIntro;
 	Text ResultsHeader;
 	Text ResultsIntro;
+	Text EndGame;
 	Font font;
 	MyActor m_actor;
 	Music m_Music;

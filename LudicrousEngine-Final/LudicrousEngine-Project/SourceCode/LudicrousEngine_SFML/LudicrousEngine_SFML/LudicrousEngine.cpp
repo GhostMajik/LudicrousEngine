@@ -90,11 +90,16 @@ LudicrousEngine::LudicrousEngine()
 	ResultsHeader.setPosition(resolution.x / 2 - 600, 100);
 
 	ResultsIntro.setFont(font);
-	ResultsIntro.setString("PRESS 'ENTER' FOR MENU");
+	ResultsIntro.setString("PRESS 'ENTER' TO PLAY AGAIN");
 	ResultsIntro.setCharacterSize(50);
 	ResultsIntro.setFillColor(Color::White);
-	ResultsIntro.setPosition(resolution.x / 2 - 270, resolution.y / 2 + 400);
+	ResultsIntro.setPosition(resolution.x / 2 - 400, resolution.y / 2 + 400);
 
+	EndGame.setFont(font);
+	EndGame.setString("Press 'Esc' to Quit");
+	EndGame.setCharacterSize(40);
+	EndGame.setFillColor(Color::White);
+	EndGame.setPosition(resolution.x / 2 - 270, resolution.y / 2 + 450);
 
 	AudioComponent::PlayMusic("menuNew.ogg");
 
@@ -253,16 +258,17 @@ void LudicrousEngine::start()
 			m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(MenuHeader);
 			m_Window.draw(MenuIntro);
+			
 			if (Keyboard::isKeyPressed(Keyboard::Enter))
 			{			
 				GAME_STATE = GAME;
+				
 				AudioComponent::PlayMusic("music.wav");
 			}
 
 		}
 		if (GAME_STATE == GAME)
 		{
-			score = 0;
 			//m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(spr, &shader);	
 			m_Window.draw(border);
@@ -301,9 +307,12 @@ void LudicrousEngine::start()
 			m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(ResultsHeader);
 			m_Window.draw(ResultsIntro);
+			m_Window.draw(EndGame);
+
 			if (Keyboard::isKeyPressed(Keyboard::Enter))
 			{
-				GAME_STATE = MENU;
+				GAME_STATE = GAME;	
+				score = 0;
 				AudioComponent::PlayMusic("music.wav");
 			}
 		}
