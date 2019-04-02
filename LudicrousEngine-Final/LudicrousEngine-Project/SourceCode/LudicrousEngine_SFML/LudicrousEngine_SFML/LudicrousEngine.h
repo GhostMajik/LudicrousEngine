@@ -16,6 +16,8 @@ private:
 	Text infoText;
 	Text MenuHeader;
 	Text MenuIntro;
+	Text ResultsHeader;
+	Text ResultsIntro;
 	Font font;
 	MyActor m_actor;
 	Music m_Music;

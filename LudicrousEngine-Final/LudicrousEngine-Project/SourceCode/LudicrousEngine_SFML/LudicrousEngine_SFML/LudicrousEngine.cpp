@@ -62,13 +62,14 @@ LudicrousEngine::LudicrousEngine()
 	m_SplashScreen.loadFromFile("../Assets/splash.png");
 	m_SplashScreenSprite.setTexture(m_SplashScreen);
 	
+
 	//ALL TEXT RELATED
 	font.loadFromFile("sansation.ttf");
 	infoText.setFont(font);
-	infoText.setString("Press 'Esc' to EXIT");
+	infoText.setString("Score: ");
 	infoText.setCharacterSize(50);
 	infoText.setFillColor(Color::White);
-	infoText.setPosition(20, 0);
+	infoText.setPosition(20, 10);
 
 	MenuHeader.setFont(font);
 	MenuHeader.setString("BALLS OF FURY");
@@ -82,7 +83,17 @@ LudicrousEngine::LudicrousEngine()
 	MenuIntro.setFillColor(Color::White);
 	MenuIntro.setPosition(resolution.x/2-270, resolution.y/2+400);
 
+	ResultsHeader.setFont(font);
+	ResultsHeader.setString("Your Score: ");
+	ResultsHeader.setCharacterSize(150);
+	ResultsHeader.setFillColor(Color::White);
+	ResultsHeader.setPosition(resolution.x / 2 - 600, 100);
 
+	ResultsIntro.setFont(font);
+	ResultsIntro.setString("PRESS 'ENTER' FOR MENU");
+	ResultsIntro.setCharacterSize(50);
+	ResultsIntro.setFillColor(Color::White);
+	ResultsIntro.setPosition(resolution.x / 2 - 270, resolution.y / 2 + 400);
 
 
 	AudioComponent::PlayMusic("menuNew.ogg");
@@ -175,6 +186,9 @@ void LudicrousEngine::start()
 	sf::Time elapsed = clock.restart();
 	const sf::Time update_ms = sf::seconds(1.f / 120.f);
 
+	int score = 0;
+
+
 	while (m_Window.isOpen())
 	{
 
@@ -248,6 +262,7 @@ void LudicrousEngine::start()
 		}
 		if (GAME_STATE == GAME)
 		{
+			score = 0;
 			//m_Window.draw(m_BackgroundSprite);
 			m_Window.draw(spr, &shader);	
 			m_Window.draw(border);
@@ -258,13 +273,41 @@ void LudicrousEngine::start()
 			for (i = 0; i < NUM_BALLS; i++)
 				m_Window.draw(bs[i].get_circleShape());
 
+			score++;
+
+			std::stringstream ss;
+			ss << "Score: " << score;
+			infoText.setString(ss.str());
+
 			m_Window.draw(pSystem);
 
 			m_Window.draw(m_actor.getSprite());
 			m_Window.draw(infoText);
 			m_Window.draw(rectangle);
 
-		}		
+			if (Keyboard::isKeyPressed(Keyboard::L))
+			{
+				GAME_STATE = RESULTS;
+			}
+
+		}
+
+		if (GAME_STATE == RESULTS)
+		{
+			std::stringstream aa;
+			aa << "Final Score: " << score;
+			ResultsHeader.setString(aa.str());
+
+			m_Window.draw(m_BackgroundSprite);
+			m_Window.draw(ResultsHeader);
+			m_Window.draw(ResultsIntro);
+			if (Keyboard::isKeyPressed(Keyboard::Enter))
+			{
+				GAME_STATE = MENU;
+				AudioComponent::PlayMusic("music.wav");
+			}
+		}
+
 		
 		m_Window.display();
 	}

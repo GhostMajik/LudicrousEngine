@@ -5,6 +5,7 @@ enum SCENE
 
 	SPLASH,
 	MENU,
-	GAME
+	GAME,
+	RESULTS
 
 };
