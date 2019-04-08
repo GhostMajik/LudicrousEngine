@@ -1,0 +1,68 @@
+﻿  AudioComponent.cpp
+  ball.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.h(8): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.cpp(198): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.cpp(208): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.cpp(216): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.cpp(220): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.cpp(321): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  BaseComponent.cpp
+  Draw.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  GameObject.cpp
+  Input.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  LudicrousEngine.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ball.h(8): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(44): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(45): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(48): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(121): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(130): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(144): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(205): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(269): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(317): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(349): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'int', possible loss of data
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.cpp(341): warning C4101: 'sysInfo': unreferenced local variable
+  main.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  MyActor.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  PhysicsRBody.cpp
+  RenderComponent.cpp
+  SceneGraph.cpp
+  TransformComponent.cpp
+  Update.cpp
+c:\users\ghostmajik\desktop\coding\engine\ludicrousengine-final-master\ludicrousengine-final\ludicrousengine-project\sourcecode\ludicrousengine_sfml\ludicrousengine_sfml\ludicrousengine.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+  LudicrousEngine_SFML.vcxproj -> C:\Users\GhostMajik\Desktop\Coding\Engine\LudicrousEngine-FINAL-MASTER\LudicrousEngine-Final\LudicrousEngine-Project\SourceCode\LudicrousEngine_SFML\x64\Debug\LudicrousEngine_SFML.exe
